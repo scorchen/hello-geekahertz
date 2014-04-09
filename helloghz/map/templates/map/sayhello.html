@@ -1,98 +1,133 @@
+{% extends "map/baselayout.html" %}
 
-<!DOCTYPE html >
+{% block content %}
+<form action="/map/sayhello/" method="post">{% csrf_token %}
 
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>Say Hello</title>
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjU0EJWnWPMv7oQ-jjS7dYxSPW5CJgpdgO_s4yyMovOaVh_KvvhSfpvagV18eOyDWu7VytS6Bi1CWxw"
-      type="text/javascript"></script>
-    <script type="text/javascript">
+    <div style="margin: 10px 0px">
 
-    var map = null;
-    var geocoder = null;
+        <div class="panel panel-default" style="width: 100%; margin: auto">
+            <div class="panel-heading">
+                <h3 class="panel-title">Where was your video recorded?</h3>
+
+                <div style="margin: 10px 0px 5px 0px">
+                    1. Search for an address: <input type="text" style="width:450px" id="address" value=""/>
+                    <input id="btnSearch" type="button" value="Go!"/>
+
+                </div>
+                <div style="margin: 10px 0px 5px 0px">
+                    2. Drag the marker below to adjust the location.
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <div id="map-canvas"/>
+
+
+            </div>
+        </div>
+    </div>
+    <div style="margin: 10px 0px">
+
+        <div class="panel panel-default" style="width: 100%; margin: auto">
+            <div class="panel-heading">
+                <h3 class="panel-title">Tell us about your video</h3>
+
+                <div style="margin: 10px 0px 5px 0px">
+                    Paste the YouTube Video URL below. E.g. http://www.youtube.com/watch?v=oHg5SJYRHA0.
+                </div>
+
+            </div>
+            <div class="panel-body" style="padding: 15px;">
+                <div class="fieldWrapper">
+                    {{ form.vid.errors }}
+                    <label for="id_vid">Youtube Video URL:</label>
+                    {{ form.vid }}
+                </div>
+
+<input type="submit" value="Send Hello!" class="btn btn-primary btn-lg"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjU0EJWnWPMv7oQ-jjS7dYxSPW5CJgpdgO_s4yyMovOaVh_KvvhSfpvagV18eOyDWu7VytS6Bi1CWxw"
+        type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+
+
+        var map = null;
+        var geocoder = null;
+        initialize();
+        $(window).unload(function () {
+            GUnload();
+        });
+
+        $("#btnSearch").click(function () {
+            showAddress($("#address").val());
+        });
+    });
+
 
     function initialize() {
-      if (GBrowserIsCompatible()) {
-        map = new GMap2(document.getElementById("map_canvas"));
-        map.setCenter(new GLatLng(37.4419, -122.1419), 1);
-        map.setUIToDefault();
-        geocoder = new GClientGeocoder();
-      }
+        if (GBrowserIsCompatible()) {
+            var mapOptions = {
+                center: new google.maps.LatLng(0, 0),
+                zoom: 2
+            };
+            var divMapCanvas = $("#map-canvas")[0];
+            map = new GMap2(divMapCanvas, mapOptions);
+            map.setCenter(new GLatLng(37.4419, -122.1419), 2);
+            map.setUIToDefault();
+            geocoder = new GClientGeocoder();
+        }
     }
 
     function showAddress(address) {
-      if (geocoder) {
-        geocoder.getLatLng(
-          address,
-          function(point) {
-            if (!point) {
-              alert(address + " not found");
-            } else {
-              map.setCenter(point, 15);
-              var marker = new GMarker(point, {draggable: true});
-              map.addOverlay(marker);
-              GEvent.addListener(marker, "dragend", function() {
+        if (geocoder) {
+            geocoder.getLatLng(
+                    address,
+                    function (point) {
+                        if (!point) {
+                            alert(address + " not found");
+                        } else {
+                            map.setCenter(point, 15);
+                            var marker = new GMarker(point, {draggable: true});
+                            map.addOverlay(marker);
+                            GEvent.addListener(marker, "dragend", function () {
 
-                LatLongArr = marker.getLatLng().toString().split(",")
-                LatLongArr[0] = LatLongArr[0].replace(/[() ]/g,'');
-                LatLongArr[1] = LatLongArr[1].replace(/[() ]/g,'');
-                var textbox = document.getElementsByName('lat')[0]
-                textbox.value = LatLongArr[0];
-               textbox = document.getElementsByName('long')[0]
-                textbox.value = LatLongArr[1];
-              });
-              GEvent.addListener(marker, "click", function() {
+                                LatLongArr = marker.getLatLng().toString().split(",")
+                                LatLongArr[0] = LatLongArr[0].replace(/[() ]/g, '');
+                                LatLongArr[1] = LatLongArr[1].replace(/[() ]/g, '');
+                                var textbox = document.getElementsByName('lat')[0]
+                                textbox.value = LatLongArr[0];
+                                textbox = document.getElementsByName('long')[0]
+                                textbox.value = LatLongArr[1];
+                            });
+                            GEvent.addListener(marker, "click", function () {
 
-                LatLongArr = marker.getLatLng().toString().split(",")
-                LatLongArr[0] = LatLongArr[0].replace(/[() ]/g,'');
-                LatLongArr[1] = LatLongArr[1].replace(/[() ]/g,'');
-                var textbox = document.getElementsByName('lat')[0]
-                textbox.value = LatLongArr[0];
-               textbox = document.getElementsByName('long')[0]
-                textbox.value = LatLongArr[1];
-              });
-	      GEvent.trigger(marker, "click");
-            }
-          }
-        );
-      }
+                                LatLongArr = marker.getLatLng().toString().split(",")
+                                LatLongArr[0] = LatLongArr[0].replace(/[() ]/g, '');
+                                LatLongArr[1] = LatLongArr[1].replace(/[() ]/g, '');
+                                var textbox = document.getElementsByName('lat')[0]
+                                textbox.value = LatLongArr[0];
+                                textbox = document.getElementsByName('long')[0]
+                                textbox.value = LatLongArr[1];
+                            });
+                            GEvent.trigger(marker, "click");
+                        }
+                    }
+            );
+        }
     }
-    </script>
-  </head>
+</script>
 
-  <body onload="initialize()" onunload="GUnload()">
-    <form action="#" onsubmit="showAddress(this.address.value); return false">
-      <p>
-        Enter an address, and then drag the marker to tweak the location.
-        <br/>
-        If you don't do this, it won't work. 
-      </p>
-      <p>
-        <input type="text" style="width:350px" name="address" value="" />
-        <input type="submit" value="Go!" />
-      </p>
-      <div id="map_canvas" style="width: 600px; height: 400px"></div>
+{% endblock %}
 
-    </form>
 
-<form action="/map/sayhello/" method="post">{% csrf_token %}
-    Put the youtube Video ID here. It's the part like this: http://www.youtube.com/watch?v=<b>oHg5SJYRHA0</b>
-	<div class="fieldWrapper">
-        {{ form.vid.errors }}
-        <label for="id_vid">Youtube Video ID:</label>
-        {{ form.vid }}
-    </div>
-    <div class="fieldWrapper">
-        {{ form.lat.errors }}
-        {{ form.lat }}
-    </div>
-    <div class="fieldWrapper">
-        {{ form.long.errors }}
-        {{ form.long }}
-    </div>
-    <p><input type="submit" value="Send Hello!" /></p>
-</form>
 
-  </body>
-</html>
+
+
