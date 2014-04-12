@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from map.models import Point
 from map.forms import helloForm
+from map.forms import HelloForm2
 
 
 #index just returns list of points for javascript to map
@@ -30,3 +31,22 @@ def sayhello(request):
         'form': form,
     })
 
+#Lets users add a video to the database to be mapped
+def sayhello2(request):
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = HelloForm2(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            newPoint = Point(vid=form.Video.cleaned_data['videoId'],
+                             lat=form.Video.cleaned_data['latitude'],
+                             long=form.Video.cleaned_data['longitude'])
+
+            newPoint.save()
+            # ...
+            return HttpResponseRedirect('/map/') # Redirect after POST
+    else:
+        form = HelloForm2()  # An unbound form
+
+    return render(request, 'map/sayhello2.html', {
+        'form': form,
+    })
