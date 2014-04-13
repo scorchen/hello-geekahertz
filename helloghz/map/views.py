@@ -31,7 +31,7 @@ def sayhello(request):
     if request.method == 'POST': # If the form has been submitted...
         form = helloForm(request.POST) # A form bound to the POST data
         if canPostData(request.POST): # All validation rules pass
-
+            form.is_valid()#Testing if required for cleaned_data
             videoId = getVideoId(form.cleaned_data['full_url'])
 
             newPoint = Point(vid=videoId, lat=form.cleaned_data['lat'], long=form.cleaned_data['long'])
