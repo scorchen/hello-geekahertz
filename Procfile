@@ -1,1 +1,1 @@
-web: cd helloghz; gunicorn helloghz.wsgi
+web: cd helloghz; python runserver 0.0.0.0:$PORT
