@@ -1,1 +1,1 @@
-web: cd helloghz; python runserver 0.0.0.0:$PORT
+web: cd helloghz; python manage.py runserver 0.0.0.0:$PORT
