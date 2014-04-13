@@ -1,1 +1,1 @@
-web: gunicorn helloghz.wsgi
+web: cd helloghz; gunicorn helloghz.wsgi
