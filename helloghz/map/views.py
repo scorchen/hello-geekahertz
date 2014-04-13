@@ -5,6 +5,13 @@ from map.models import Point
 from map.forms import helloForm
 from urlparse import urlparse
 
+#############FOR old vs new parse_qs Versions##########
+import urlparse # if we're pre-2.6, this will not include parse_qs
+try:
+    from urlparse import parse_qs
+except ImportError: # old version, grab it from cgi
+    from cgi import parse_qs
+    urlparse.parse_qs = parse_qs
 
 
 #index just returns list of points for javascript to map
