@@ -9,9 +9,13 @@ from urlparse import urlparse
 import urlparse # if we're pre-2.6, this will not include parse_qs
 try:
     from urlparse import parse_qs
+    from urlparse import urlparse
 except ImportError: # old version, grab it from cgi
     from cgi import parse_qs
     urlparse.parse_qs = parse_qs
+    urlparse.urlparse = urlparse
+
+
 
 
 #index just returns list of points for javascript to map
