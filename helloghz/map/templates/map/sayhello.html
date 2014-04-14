@@ -84,14 +84,14 @@
         var map = null;
         var geocoder = null;
         initialize();
-        var loadCurrentAddress = showAddress($("#id_address").val());
-        loadCurrentAddress;
+        showAddress($("#id_address").val());
+        
         $(window).unload(function () {
             GUnload();
         });
 
         $("#btnSearch").click(function () {
-            loadCurrentAddress;
+           showAddress($("#id_address").val());
         });
     });
 
