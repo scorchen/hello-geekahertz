@@ -2,29 +2,60 @@
 
 
 {% block content %}
-<div class="starter-template">
-    <h1>The Hello Geekahertz Project</h1>
+<div class="jumbotron">
+    <h2>The Hello Geekahertz Project</h2>
 
     <p class="lead">The goal of this project is to get as many of our friends (thats you!) as we can to record “hello
         geekahertz” videos around the world.
         We will take care of the rest by organizing these videos and their corresponding locations in an easy to view
-        format on this web site.
+        format on this web site.</a>
+
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="mySmallModalLabel">Saying Hello and Shirt Things</h4>
+        </div>
+     
+       
+        <ol>
+            <li class="text-left">
+ Record a video by saying "hello geekahertz" at any point in video. <small>(We prefer "hello geekahertz!" beginning but dont want to restrict your creativity.)</small></li>
+<li class="text-left"> Upload it to YouTube</li>
+<li><a class="active" href="/map/sayhello">Submit the YouTube URL here.</a></li>
+
+</ol>
+
+   
+    </div>
+  </div>
+</div>
+
+
+<p class="text-left">
+    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Learn How To Say Hello!</button>
+
+        
+    </p>   
+
     </p>
 
 
-    <div class="panel panel-default" style="width: 100%; margin: auto">
+    
+</div>
+<div class="panel panel-default" style="width: 100%; margin: auto">
         <div class="panel-heading">
             <h3 class="panel-title">Such Geekahertz, Much Hello</h3>
         </div>
         <div class="panel-body">
 
             <div id="map-canvas"> </div>
-
+            <div id="divError"></div>
 
         </div>
     </div>
-</div>
-
 {% endblock %}
 
 
@@ -66,7 +97,7 @@
             marker.setMap(map);
             {% endfor %}
             {% else %}
-        <p> Something is wrong. </p>
+         $(".divError").show();
         {% endif %}
     }
 
