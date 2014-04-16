@@ -1,10 +1,11 @@
 {% extends "map/baselayout.html" %}
 
+    {% load staticfiles %}
 
 {% block content %}
 <div class="jumbotron">
-    <h2>The Hello Geekahertz Project</h2>
-
+    <div class="text-center">
+<img height="100" src='{% static "map/images/logo.png" %}' alt="Hello Geekahertz"></div>
     <p class="lead">The goal of this project is to get as many of our friends (thats you!) as we can to record “hello
         geekahertz” videos around the world.
         We will take care of the rest by organizing these videos and their corresponding locations in an easy to view
