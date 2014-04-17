@@ -3,45 +3,36 @@
     {% load staticfiles %}
 
 {% block content %}
+
 <div class="jumbotron">
-    <div class="text-center">
-<img height="100" src='{% static "map/images/logo.png" %}' alt="Hello Geekahertz"></div>
-    <p class="lead">The goal of this project is to get as many of our friends (thats you!) as we can to record “hello
-        geekahertz” videos around the world.
-        We will take care of the rest by organizing these videos and their corresponding locations in an easy to view
-        format on this web site.</a>
+
+<div class="row">
+<div class="col-md-3"> <img   class="img-responsive" src='{% static "map/images/logo3.png" %}' alt="Hello Geekahertz"  ></div>
+<div class="col-md-8"><h2 >The Hello Geekahertz Project</h2>
+     <p  >
+           The goal of this project is to get as many of our friends <b>(thats you!)</b> as we can to record “hello
+                geekahertz” videos around the world.
+            </p>
+             <p  >
+                We will take care of the rest by organizing these videos and their corresponding locations in an easy to view
+                format on this web site.</p>
 
 
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-<div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title" id="mySmallModalLabel">Saying Hello and Shirt Things</h4>
-        </div>
-     
-       
-        <ol>
-            <li class="text-left">
- Record a video by saying "hello geekahertz" at any point in video. <small>(We prefer "hello geekahertz!" beginning but dont want to restrict your creativity.)</small></li>
-<li class="text-left"> Upload it to YouTube</li>
-<li><a class="active" href="/sayhello/">Submit the YouTube URL here.</a></li>
-
-</ol>
-
-   
-    </div>
-  </div>
+ <div class="text-right" >
+        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Learn How to Say Hello</button>
+        <a href="/sayhello" class="btn btn-lg btn-success" >Say Hello</a>
+        </div> 
+                </div>
+                
 </div>
 
 
-<p class="text-left">
-    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Learn How To Say Hello!</button>
+    
+    
 
-        
-    </p>   
+   
+    
 
-    </p>
 
 
     
@@ -57,6 +48,30 @@
 
         </div>
     </div>
+
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="mySmallModalLabel">Saying Hello and Shirt Things</h4>
+        </div>
+     
+
+ 
+        <ol>
+            <li class="text-left">
+ Record a video by saying "hello geekahertz" at any point in video. <small>(We prefer "hello geekahertz!" beginning but dont want to restrict your creativity.)</small></li>
+<li class="text-left"> Upload it to YouTube</li>
+<li><a class="active" href="/sayhello">Submit the YouTube URL here.</a></li>
+
+</ol>
+
+   
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 
@@ -93,7 +108,7 @@
                 bubble = new google.maps.InfoWindow({
                     content: '<iframe title="YouTube video player" class="youtube-player" type="text/html" width="480" height="390" src="http://www.youtube.com/embed/{{ point.vid }}?rel=0" frameborder="0"></iframe>'
                 })
-                bubble.open(map, this);
+                bubble.open(map, marker);
             })
             marker.setMap(map);
             {% endfor %}
