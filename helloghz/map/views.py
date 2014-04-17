@@ -38,7 +38,7 @@ def sayhello(request):
 
             newPoint.save()
             # ...
-            return HttpResponseRedirect('/map/') # Redirect after POST
+            return HttpResponseRedirect('/') # Redirect after POST
     else:
         form = helloForm() # An unbound form
 

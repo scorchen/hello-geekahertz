@@ -19,6 +19,6 @@ urlpatterns = patterns('',
     #url(r'^admin/', include(admin.site.urls)),
 
     #/map/ basicaly the index of the site
-    url(r'^map/', include('map.urls')),
+    url(r'^', include('map.urls')),
 
 )

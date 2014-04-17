@@ -25,7 +25,7 @@
             <li class="text-left">
  Record a video by saying "hello geekahertz" at any point in video. <small>(We prefer "hello geekahertz!" beginning but dont want to restrict your creativity.)</small></li>
 <li class="text-left"> Upload it to YouTube</li>
-<li><a class="active" href="/map/sayhello">Submit the YouTube URL here.</a></li>
+<li><a class="active" href="/sayhello/">Submit the YouTube URL here.</a></li>
 
 </ol>
 
@@ -93,7 +93,7 @@
                 bubble = new google.maps.InfoWindow({
                     content: '<iframe title="YouTube video player" class="youtube-player" type="text/html" width="480" height="390" src="http://www.youtube.com/embed/{{ point.vid }}?rel=0" frameborder="0"></iframe>'
                 })
-                bubble.open(map, marker);
+                bubble.open(map, this);
             })
             marker.setMap(map);
             {% endfor %}

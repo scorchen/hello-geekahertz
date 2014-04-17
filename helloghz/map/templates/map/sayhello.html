@@ -112,6 +112,7 @@
 
     function showAddress(address) {
         if (geocoder) {
+            map.clearOverlays();
             geocoder.getLatLng(
                     address,
                     function (point) {
