@@ -1,6 +1,6 @@
 
 html { height: 100% }
-  body { height: 100%; margin: 0; padding: 0; padding-top: 50px; }
+  body { height: 100%; margin: 0; padding: 0; padding-top: 50px;   }
   #map-canvas { height: 100% }
 
 .starter-template {
@@ -11,5 +11,14 @@ html { height: 100% }
 
 .panel-body {  padding: 1px}
 
-#id_full_url{ width: 500px;}
+#id_full_url{ }
 
+/*.navbar-brand{ padding: 10px;}*/
+/*.navbar{min-height: 30px}*/
+.navbar-inverse{}
+/* background-color: #3e4d6a; background-image: none;*/
+
+.modal-header{
+    
+}
+.container .jumbotron{ padding: 10px ; }

@@ -4,71 +4,74 @@
 
 {% block content %}
 
-<div class="jumbotron">
+<div class="jumbotron " >
 
 <div class="row">
-<div class="col-md-3"> <img   class="img-responsive" src='{% static "map/images/logo3.png" %}' alt="Hello Geekahertz"  ></div>
-<div class="col-md-8"><h2 >The Hello Geekahertz Project</h2>
-     <p  >
+ 
+<div class="col-md-3  "> 
+<div ><img   class="img-responsive" src='{% static "map/images/logo3.png" %}' alt="Hello Geekahertz" align="center"  >
+</div>
+</div>
+<div class="col-md-9"><h4 >The Hello Geekahertz Project</h4>
+     <p style="font-size: 12pt"  >
            The goal of this project is to get as many of our friends <b>(thats you!)</b> as we can to record “hello
                 geekahertz” videos around the world.
             </p>
-             <p  >
+             <p style="font-size: 12pt" >
                 We will take care of the rest by organizing these videos and their corresponding locations in an easy to view
                 format on this web site.</p>
 
 
  <div class="text-right" >
-        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Learn How to Say Hello</button>
+        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-info-sign"></span> Help Me</button>
         <a href="/sayhello" class="btn btn-lg btn-success" ><span class="glyphicon glyphicon-pushpin"></span> Say Hello</a>
         </div> 
                 </div>
                 
 </div>
-
-
-    
-    
-
-   
-    
-
-
-
     
 </div>
-<div class="panel panel-default" style="width: 100%; margin: auto">
-        <div class="panel-heading">
-            <h3 class="panel-title">Such Geekahertz, Much Hello</h3>
-        </div>
-        <div class="panel-body">
 
-            <div id="map-canvas"> </div>
+     
+       
+
+            <div id="map-canvas" class="jumbotron"> </div>
             <div id="divError"></div>
 
-        </div>
-    </div>
+        
+
 
 
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-<div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title" id="mySmallModalLabel">Saying Hello and Shirt Things</h4>
-        </div>
+            <div class="modal-header ">
+
+
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title " id="mySmallModalLabel">Saying Hello and Shirt Things</h4>
+
+                    </div>
      
-
- 
-        <ol>
-            <li class="text-left">
- Record a video by saying "hello geekahertz" at any point in video. <small>(We prefer "hello geekahertz!" beginning but dont want to restrict your creativity.)</small></li>
-<li class="text-left"> Upload it to YouTube</li>
-<li><a class="active" href="/sayhello">Submit the YouTube URL here.</a></li>
-
-</ol>
-
-   
+                     <div class="modal-body">
+                            <div class="row">
+                                        <div class="col-md-4"><h2><span class="glyphicon glyphicon-record"></span> Record</h2>
+                                    Record a video by saying "hello geekahertz" at any point in video. 
+                                    </div>
+                                        <div class="col-md-4"><h2><span class="glyphicon glyphicon-cloud-upload"></span> Upload</h2>
+                                     Upload your video to your YouTube account. 
+                                    </div>
+                                        <div class="col-md-4"><h2><span class="glyphicon glyphicon-pushpin"></span> Say Hello</h2>
+                                    <a class="active" href="/sayhello"><strong>Say Hello</strong></a> by giving us the YouTube URL and location the video was recorded.
+                                    </div>
+                            </div>
+      
+                    </div>
+        <div class="modal-footer">
+     <a href="/sayhello" class="btn btn-md btn-success" ><span class="glyphicon glyphicon-pushpin"></span> Say Hello</a>
+            <button type="button" class="btn btn-default btn-md" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+       
+          </div>
     </div>
   </div>
 </div>
@@ -108,7 +111,8 @@
                 bubble = new google.maps.InfoWindow({
                     content: '<iframe title="YouTube video player" class="youtube-player" type="text/html" width="480" height="390" src="http://www.youtube.com/embed/{{ point.vid }}?rel=0" frameborder="0"></iframe>'
                 })
-                bubble.open(map, marker);
+
+                bubble.open(map, this);
             })
             marker.setMap(map);
             {% endfor %}

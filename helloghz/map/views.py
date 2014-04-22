@@ -4,6 +4,9 @@ from django.shortcuts import render
 from map.models import Point
 from map.forms import helloForm
 from urlparse import urlparse
+from django.http import HttpResponse
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 #############FOR old vs new parse_qs Versions##########
 import urlparse # if we're pre-2.6, this will not include parse_qs
@@ -26,6 +29,7 @@ def index(request):
     return render(request, 'map/index.html', context)
 
 #Lets users add a video to the database to be mapped
+@xframe_options_exempt
 def sayhello(request):
 
     if request.method == 'POST': # If the form has been submitted...

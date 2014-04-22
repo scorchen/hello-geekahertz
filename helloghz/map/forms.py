@@ -1,6 +1,5 @@
 from django import forms
 
-
 class helloForm(forms.Form):
     full_url = forms.URLField(min_length=30,
                               required=True,
