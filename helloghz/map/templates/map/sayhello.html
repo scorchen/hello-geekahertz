@@ -1,85 +1,80 @@
 {% extends "map/baselayout.html" %}
 
 {% block content %}
-<form action="/map/sayhello/" method="post">{% csrf_token %}
+<form action="/map/sayhello/" method="post">{% csrf_token %}{{ form.non_field_errors }}
 
-
- {{ form.non_field_errors }}
-
-    <div >
-<div style="padding: 10px 0 10px 0">
-        <div class="row">
-            <div class="col-md-12">
-            <button type="submit"  class="btn btn-primary btn-md"> <span class="glyphicon glyphicon-pushpin"></span> Save</button>
-            <button type="submit"  class="btn btn-default btn-md">  Cancel</button>
+    <div>
+        <div style="padding: 10px 0 10px 0">
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary btn-md"> <span class="glyphicon glyphicon-pushpin"></span> Save</button>
+                    <button type="submit" class="btn btn-default btn-md">  Cancel</button>
+                </div>
             </div>
-</div>
-</div>
-		<div class="panel panel-default" style="width: 100%; margin: auto">
-			<div class="panel-heading">
+        </div>
+        <div class="panel panel-default" style="width: 100%; margin: auto">
+            <div class="panel-heading">
 
-				<h3 class="panel-title">Tell us about your video</h3>
-
+                <h3 class="panel-title">Tell us about your video</h3>
 
 
-			</div>
-			<div class="panel-body" style="padding: 15px;">
 
-<div class="row">
-<div class="col-md-6"> 
+            </div>
+            <div class="panel-body" style="padding: 15px;">
 
-					<label for="id_full_url" class="control-label">YouTube URL</label>
-					{{ form.full_url }}
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <label for="id_full_url" class="control-label">YouTube URL</label>{{ form.full_url }}
 {{ form.full_url.errors }}
-					<span class="help-block">
-					<small>E.g. http://www.youtube.com/watch?v=oHg5SJYRHA0 </small>
-					</span>
+                        <span class="help-block">
+                            <small>E.g. http://www.youtube.com/watch?v=oHg5SJYRHA0 </small>
+                        </span>
 
-<div id="divVideo"></div>
-</div>
-<div class="col-md-6"> 
+                        <div id="divVideo"></div>
+                    </div>
+                    <div class="col-md-6">
 
-<label for="id_address" class="control-label"> Video Location</label>
+                        <label for="id_address" class="control-label"> Video Location</label>
 
-						<div class="input-group">
-							{{ form.address }}
-						   <span class="input-group-btn"> <button id="btnSearch" type="button" class="btn btn-primary" >
-							   <span class="glyphicon glyphicon-search"></span> Search
-						   </button></span>
-						</div>
+                        <div class="input-group">{{ form.address }}
+                            <span class="input-group-btn">
+                                <button id="btnSearch" type="button" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search"></span> Search
+                                </button>
+                            </span>
+                        </div>
 
-							<span class="help-block"><small>Search for an address then drag the marker below to adjust the location.</small></span>
-
-
-
-				<div id="map-canvas" class="jumbotron" />
+                        <span class="help-block"><small>Search for an address then drag the marker below to adjust the location.</small></span>
 
 
-			
-</div>
-</div>
-				<div class="fieldWrapper form-group">
-					
-				</div>
-				<div class="fieldWrapper form-group">
 
-				</div>
-				<div style="visibility: hidden">
-					<div class="fieldWrapper">
-						{{ form.lat }}
-					</div>
-					<div class="fieldWrapper ">
-						{{ form.long }}
-					</div>
-				</div>
-			
-			</div>
-		</div>
-	</div>
+                        <div id="map-canvas" class="jumbotron" />
+
+
+
+                    </div>
+                </div>
+                <div class="fieldWrapper form-group">
+
+                </div>
+                <div class="fieldWrapper form-group">
+
+                </div>
+                <div style="visibility: hidden">
+                    <div class="fieldWrapper">{{ form.lat }}
+                    </div>
+                    <div class="fieldWrapper ">{{ form.long }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <div style="margin: 10px 0px">
 
-        
+
     </div>
 
 </form>
@@ -97,33 +92,33 @@
         var geocoder = null;
         initialize();
         showAddress($("#id_address").val());
-        
+
         $(window).unload(function () {
             GUnload();
         });
 
         $("#btnSearch").click(function (e) {
-           
-           showAddress($("#id_address").val());
+
+            showAddress($("#id_address").val());
         });
 
-    $("#id_full_url").change(function(){
-        var videoId = youtube_parser($(this).val());
-        $("#divVideo").html("<iframe width='100%' height='315' src='//www.youtube.com/embed/"+videoId+"' frameborder='0' allowfullscreen></iframe>");
-    });
+        $("#id_full_url").change(function () {
+            var videoId = youtube_parser($(this).val());
+            $("#divVideo").html("<iframe width='100%' height='315' src='//www.youtube.com/embed/" + videoId + "' frameborder='0' allowfullscreen></iframe>");
+        });
 
 
     });
 
-function youtube_parser(url){
-   var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-var match = url.match(regExp);
-if (match&&match[2].length==11){
-    return match[2];
-}else{
-        alert("Your video is broke");
+    function youtube_parser(url) {
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return match[2];
+        } else {
+            alert("Your video is broke");
+        }
     }
-}
 
     function initialize() {
         if (GBrowserIsCompatible()) {
@@ -149,7 +144,7 @@ if (match&&match[2].length==11){
                             alert(address + " not found");
                         } else {
                             map.setCenter(point, 4);
-                            var marker = new GMarker(point, {draggable: true});
+                            var marker = new GMarker(point, { draggable: true });
                             map.addOverlay(marker);
                             GEvent.addListener(marker, "dragend", function () {
 
@@ -178,7 +173,6 @@ if (match&&match[2].length==11){
         }
     }
 </script>
-
 {% endblock %}
 
 
