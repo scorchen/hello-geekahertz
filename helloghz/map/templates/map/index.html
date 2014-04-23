@@ -94,7 +94,8 @@
     function initialize() {
         var mapOptions = {
             center: new google.maps.LatLng(0, 0),
-            zoom: 2
+            zoom: 2,
+            scaleControl: true
         };
         var divMapCanvas = $("#map-canvas")[0];
         var map = new google.maps.Map(divMapCanvas, mapOptions);
@@ -112,17 +113,75 @@
 
 
             google.maps.event.addListener(marker, "click", function () {
+                //Justin, I guess you get you replace this infowindow with some fancy magic. the "nearbyMarkers" function will return an array of video ids
+                //I had the infowindow display the array list just so I knew it was working
                 bubble = new google.maps.InfoWindow({
-                    content: '<iframe title="YouTube video player" class="youtube-player" type="text/html" width="480" height="390" src="http://www.youtube.com/embed/{{ point.vid }}?rel=0" frameborder="0"></iframe>'
+                    content: nearbyMarkers({{point.lat}},{{point.long}},map.getZoom()).toString()
                 })
-
                 bubble.open(map, this);
+
             })
             marker.setMap(map);
             {% endfor %}
             {% else %}
          $(".divError").show();
         {% endif %}
+    }
+
+    //Takes a lat, long, and a map zoom level
+    //returns an array of video ids near that lat,long scaled based on the maps zoom level
+    //Instead of doing it 'right' makes a  box around the point instead of a circle
+    function nearbyMarkers(lat, long, zoomlevel) {
+        var pointList = [];//there has to be a better way but I'm going ghetto mutli dimensional array
+        var result = [];
+
+        //rough decimal degree delta for 1 kilometer
+        var kmLat = 0.008983;
+        var kmLong = 0.015060;
+
+
+        //calculate how much to scale based on zoom level. Maps api says furthest out zoom is 0, most zoomed is 21
+        //each change in zoom level doubles, or halves the zoom
+        //so this gets ugly fast. if we want a box roughly .5 by .5 meters at zoom 21 our box needs to be 1048.576 by 1048.576 meters at zoom 0
+        //This means that our scale off of max zoom (1048.576) should be 1/(2^zoomlevel)
+        var scale = 1 / (Math.pow(2,zoomlevel));
+
+        //scale our lat and long deltas
+        var latDelta = scale * 1048.576 * kmLat;
+        var longDelta = scale * 1048.576 * kmLong;
+
+        //create our lat/long box bounds
+        var leftBound = lat - latDelta;
+        var rightBound = lat + latDelta;
+        var topBound = long + longDelta;
+        var bottomBound = long - longDelta;
+
+        //populate the ghetto multi dimensional array the the point values
+        {% if returnlist %}
+            {% for point in returnlist %}
+                pointList[{{forloop.counter0}}] = [{{point.lat}}, {{point.long}}, '{{point.vid}}'];
+            {% endfor %}
+        {% else %}
+            $(".divError").show();
+        {% endif %}
+
+
+        //check all points to see if they fit in the box
+        for (var i=0;i<pointList.length;i++)
+        {
+            //check to see if lat fits within the X bounds
+            if(pointList[i][0] > leftBound && pointList[i][0] < rightBound){
+                //check to see if the long fits within the Y bounds
+                if(pointList[i][1] > bottomBound && pointList[i][1] < topBound){
+                    //if I fits I sits
+                    result.push(pointList[i][2]);
+                 }
+            }
+        }
+        //this is just for troubleshooting scale. not needed
+        //result.push('  meters: '+ ((longDelta/kmLong)*1000).toString() + '  kilometers: '+ ((longDelta/kmLong)).toString()) +'"';
+
+        return result;
     }
 
 
