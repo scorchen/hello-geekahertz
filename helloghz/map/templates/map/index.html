@@ -81,9 +81,9 @@
 </div>
 
 
-<div class="video" >
+<a class="video-popup" id="popuplink">
 
-</div>
+</a>
 {% endblock %}
 
 
@@ -121,15 +121,18 @@
 	//Justin, I guess you get you replace this infowindow with some fancy magic. the "nearbyMarkers" function will return an array of video ids
 	//I had the infowindow display the array list just so I knew it was working
 	var markers = nearbyMarkers({{point.lat}}, {{point.long}}, map.getZoom()).toString();
-
+    $('#popuplink').attr("href", '/map/videopopup/?v='+markers);
+    $('#popuplink').click();
+    /*
      $.magnificPopup.open({
   items: {
     src: '/map/videopopup/?v='+markers
   },
   type: 'iframe',
-    closeBtnInside: true,
-    closeOnContentClick: true
-});
+    gallery: {
+            enabled: true
+        }
+});*/
 	
 
 });
