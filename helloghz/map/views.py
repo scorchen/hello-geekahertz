@@ -28,6 +28,16 @@ def index(request):
 
     return render(request, 'map/index.html', context)
 
+#videopopup used in an iframe popup from the map click
+def videopopup(request):
+    videoIds = request.GET.get('v','')
+
+
+    returnlist = videoIds.split(',');
+    context = {'returnlist': returnlist}
+
+    return render(request, 'map/videopopup.html', context)
+
 #Lets users add a video to the database to be mapped
 @xframe_options_exempt
 def sayhello(request):

@@ -1,0 +1,29 @@
+{% extends "map/baselayout.html" %}
+
+{% block menubar %}
+{% endblock %}
+
+{% block content %}
+
+<div class="white-popup">
+    <div class="popup-videos">{% if returnlist %}{% for point in returnlist %}
+        <div class='video-thumb'>
+            <a class='video-popup' href='http://www.youtube.com/watch?v={{point}}'><img class='img-responsive' src='http://img.youtube.com/vi/{{point}}/1.jpg'></a>
+        </div>
+       {% endfor %}{% endif %}
+        <div style="clear:both"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
+
+
+
+
+
+
+
+

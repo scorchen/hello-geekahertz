@@ -79,6 +79,11 @@
         </div>
     </div>
 </div>
+
+
+<div class="video" >
+
+</div>
 {% endblock %}
 
 
@@ -112,16 +117,26 @@
                 marker = new google.maps.Marker({ position: myLatlng});
 
 
-            google.maps.event.addListener(marker, "click", function () {
-                //Justin, I guess you get you replace this infowindow with some fancy magic. the "nearbyMarkers" function will return an array of video ids
-                //I had the infowindow display the array list just so I knew it was working
-                bubble = new google.maps.InfoWindow({
-                    content: nearbyMarkers({{point.lat}},{{point.long}},map.getZoom()).toString()
-                })
-                bubble.open(map, this);
+          google.maps.event.addListener(marker, "click", function () {
+	//Justin, I guess you get you replace this infowindow with some fancy magic. the "nearbyMarkers" function will return an array of video ids
+	//I had the infowindow display the array list just so I knew it was working
+	var markers = nearbyMarkers({{point.lat}}, {{point.long}}, map.getZoom()).toString();
 
-            })
-            marker.setMap(map);
+     $.magnificPopup.open({
+  items: {
+    src: '/map/videopopup/?v='+markers
+  },
+  type: 'iframe',
+    closeBtnInside: true,
+    closeOnContentClick: true
+});
+	
+
+});
+
+marker.setMap(map);
+
+
             {% endfor %}
             {% else %}
          $(".divError").show();
