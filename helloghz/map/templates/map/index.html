@@ -1,4 +1,4 @@
-{% extends "map/baselayout.html" %}{% load staticfiles %}
+{% extends "map/layout.html" %}{% load staticfiles %}
 
 {% block content %}
 
@@ -81,7 +81,7 @@
 </div>
 
 
-<a class="video-popup" id="popuplink">
+<a class="video-popup" id="popuplink" title="videos from the area">
 
 </a>
 {% endblock %}
@@ -122,6 +122,7 @@
 	//I had the infowindow display the array list just so I knew it was working
 	var markers = nearbyMarkers({{point.lat}}, {{point.long}}, map.getZoom()).toString();
     $('#popuplink').attr("href", '/map/videopopup/?v='+markers);
+    $('#popuplink').attr("title", 'videos and shit');
     $('#popuplink').click();
     /*
      $.magnificPopup.open({

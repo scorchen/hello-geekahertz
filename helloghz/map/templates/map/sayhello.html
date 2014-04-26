@@ -1,4 +1,4 @@
-{% extends "map/baselayout.html" %}
+{% extends "map/layout.html" %}
 
 {% block content %}
 <form action="/map/sayhello/" method="post">{% csrf_token %}{{ form.non_field_errors }}
