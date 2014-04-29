@@ -39,7 +39,7 @@ def videopopup(request):
 
 #clownpenis for teh stats and semi raw data
 def clownpenis(request):
-    fulllist = Point.objects.all()
+    fulllist = Point.objects.all().order_by("-id")
     context = {'fulllist': fulllist}
 
     return render(request, 'map/clownpenis.html', context)
