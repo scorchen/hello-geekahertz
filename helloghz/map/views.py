@@ -32,11 +32,17 @@ def index(request):
 def videopopup(request):
     videoIds = request.GET.get('v','')
 
-
     returnlist = videoIds.split(',');
     context = {'returnlist': returnlist}
 
     return render(request, 'map/videopopup.html', context)
+
+#clownpenis for teh stats and semi raw data
+def clownpenis(request):
+    fulllist = Point.objects.all()
+    context = {'fulllist': fulllist}
+
+    return render(request, 'map/clownpenis.html', context)
 
 #Lets users add a video to the database to be mapped
 @xframe_options_exempt
