@@ -1,8 +1,7 @@
 from django import forms
 
 class helloForm(forms.Form):
-    full_url = forms.URLField(min_length=30,
-                              required=True,
+    full_url = forms.URLField(required=True,
                               widget=forms.TextInput(attrs={'class': 'form-control'}))
     lat = forms.FloatField(required=True)
     long = forms.FloatField(required=True)
