@@ -23,7 +23,7 @@ except ImportError: # old version, grab it from cgi
 
 #index just returns list of points for javascript to map
 def index(request):
-    returnlist = Point.objects.all()
+    returnlist = Point.objects.all().order_by("-id")
     context = {'returnlist': returnlist}
 
     return render(request, 'map/index.html', context)
