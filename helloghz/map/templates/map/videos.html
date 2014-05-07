@@ -1,4 +1,4 @@
-{% extends "map/layout.html" %}
+{% extends "map/layout.html" %}{% load staticfiles %}
 
 
 {% block content %}
@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h2> Teh stats and shit murica</h2>
+            <h3> Hello Videos</h3>
         </div>
     </div>
 
@@ -14,8 +14,7 @@
 
         <div class="col-md-12">{% if fulllist %}
             <div>Total videos: {{fulllist.count}}</div>
-            <div>
-                Most Recent Upload: {%with fulllist|first as last%}<a class='video' href='http://www.youtube.com/watch?v={{last.vid}}'><img class='img-responsive' src='http://img.youtube.com/vi/{{last.vid}}/1.jpg'></a>{% endwith %}
+            
             </div>{% for point in fulllist %}
             <div class='video-thumb'>
                 <a class='video' href='http://www.youtube.com/watch?v={{point.vid}}'><img class='img-responsive' src='http://img.youtube.com/vi/{{point.vid}}/1.jpg'></a>
@@ -28,7 +27,7 @@
 
     </div>
 
-</div>
+
 {% endblock %}
 
 {% block scripts %}

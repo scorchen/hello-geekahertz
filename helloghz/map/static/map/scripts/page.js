@@ -43,7 +43,7 @@ function initializeJQueryCode(rootselector) {
     //    }
     //});
    
-    $('.dvideo').magnificPopup({
+    $('.video').magnificPopup({
         type: 'iframe',
         iframe: {
           
