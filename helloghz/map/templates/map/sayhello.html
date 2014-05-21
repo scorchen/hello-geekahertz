@@ -1,7 +1,21 @@
 {% extends "map/layout.html" %}
 
 {% block content %}
-<form action="/map/sayhello/" method="post">{% csrf_token %}{{ form.non_field_errors }}
+
+<!--This script disables form submission on enter key and instead triggers the map search function-->
+<!--If we ever have need for enter keys on this page this script will need to be more selective-->
+<script language=javascript type=text/javascript>
+
+function stopRKey(evt) {
+   var evt = (evt) ? evt : ((event) ? event : null);
+   var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+   if ((evt.keyCode == 13) && (node.type=="text")) {showAddress($("#id_address").val(),true); return false;}
+}
+
+document.onkeypress = stopRKey;
+
+</script>
+<form action="/map/sayhello/" method="post" >{% csrf_token %}{{ form.non_field_errors }}
 
     <div>
         <div style="padding: 10px 0 10px 0">
@@ -66,6 +80,10 @@
                     </div>
                     <div class="fieldWrapper ">{{ form.long }}
                     </div>
+                    <div class="fieldWrapper">{{ form.vTitle }}
+                    </div>
+                    <div class="fieldWrapper ">{{ form.vDescription }}
+                    </div>
                 </div>
 
             </div>
@@ -85,6 +103,7 @@
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjU0EJWnWPMv7oQ-jjS7dYxSPW5CJgpdgO_s4yyMovOaVh_KvvhSfpvagV18eOyDWu7VytS6Bi1CWxw"
         type="text/javascript"></script>
 <script type="text/javascript">
+
     $(function () {
 
 
@@ -104,7 +123,16 @@
 
         $("#id_full_url").change(function () {
             var videoId = youtube_parser($(this).val());
+            updateMapFromVid(videoId); //uses vidData global variable to "pass" values back
+            //preSubmit(videoId); //testing
+              //alert(vidData.title);
+              //alert(vidData.description);
+              //alert(vidData.day);
+              //alert(vidData.lat);
+              //alert(vidData.long);
+
             $("#divVideo").html("<iframe width='100%' height='315' src='//www.youtube.com/embed/" + videoId + "' frameborder='0' allowfullscreen></iframe>");
+
         });
 
 
@@ -117,7 +145,97 @@
             return match[2];
         } else {
             alert("Your video is broke");
+            enableFormElement('id_address');
         }
+    }
+    //kept for later reference when adding titles, dates, etc
+    function tempForLater(videoId) {
+        //This is an aysnc function. It does ugly things if you expect it to run inline
+        $.getJSON('https://www.googleapis.com/youtube/v3/videos?part=snippet%2CrecordingDetails&id=' +videoId+ '&key=AIzaSyC5uDjEOvf_uKgsD-Gbzp-DlhWPSGsdsS0',function(data,snippet){+
+            $.each(data.items, function(index, items) {
+
+                  vidData = {
+                    title: items.snippet.title,
+                    description: items.snippet.description,
+                    //Saving for when I'm not too lazy to regex
+                    //day: items.snippet.publishedAt,
+                    //month: '',
+                    //year: '',
+                    //hour: '',
+                    lat: items.recordingDetails.location.latitude,
+                    long: items.recordingDetails.location.longitude
+
+
+                  };
+
+            });
+        });
+
+    }
+    //for future use
+    function preSubmit(vidData) {
+        if(vidData.lat != '' && vidData.long != '')
+            {
+                var address = vidData.lat + ',' + vidData.long;
+                showAddress(address,false);
+            }
+        else
+            {
+                showAddress('salt lake city, ut',true); //I don't like this but can't seem to pull document values
+            }
+        var textbox = document.getElementsByName('vTitle')[0]
+        textbox.value = vidData.title;
+        var textbox = document.getElementsByName('vDescription')[0]
+        textbox.value = vidData.description;
+
+    }
+
+        function updateMapFromVid(videoId) {
+        //This is an aysnc function. It does ugly things if you expect it to run inline
+        $.getJSON('https://www.googleapis.com/youtube/v3/videos?part=snippet%2CrecordingDetails&id=' +videoId+ '&key=AIzaSyC5uDjEOvf_uKgsD-Gbzp-DlhWPSGsdsS0',function(data,snippet){+
+            $.each(data.items, function(index, items) {
+                  if(items.recordingDetails){
+                      var vidData = {
+                        lat: items.recordingDetails.location.latitude,
+                        long: items.recordingDetails.location.longitude
+                      };
+                  }
+                  else{
+                      var vidData = {
+                        lat: '',
+                        long: ''
+                      };
+                  }
+
+                    if(vidData.lat != '' && vidData.long != '')
+                        {
+                            var address = vidData.lat + ',' + vidData.long;
+                            showAddress(address,false);
+                            disableFormElement('id_address');
+                            disableFormElement('btnSearch');
+                        }
+                    else
+                        {
+                            enableFormElement('id_address');
+                            enableFormElement('btnSearch');
+                        }
+
+            });
+        });
+
+    }
+
+    function disableFormElement(elementID){
+        document.getElementById(elementID).disabled = true;
+    }
+
+    function enableFormElement(elementID){
+        document.getElementById(elementID).disabled = false;
+    }
+
+    function updateMapFromAddressBar(){
+
+        showAddress(document.getElementById('id_address').value,true);
     }
 
     function initialize() {
@@ -134,17 +252,17 @@
         }
     }
 
-    function showAddress(address) {
+    function showAddress(address, isDraggable) {
         if (geocoder) {
             map.clearOverlays();
             geocoder.getLatLng(
                     address,
                     function (point) {
                         if (!point) {
-                            alert(address + " not found");
+                            //alert(address + " not found");
                         } else {
                             map.setCenter(point, 4);
-                            var marker = new GMarker(point, { draggable: true });
+                            var marker = new GMarker(point, { draggable: isDraggable });
                             map.addOverlay(marker);
                             GEvent.addListener(marker, "dragend", function () {
 
