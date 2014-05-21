@@ -16,7 +16,6 @@ document.onkeypress = stopRKey;
 
 </script>
 <form action="/map/sayhello/" method="post" >{% csrf_token %}{{ form.non_field_errors }}
-
     <div>
         <div style="padding: 10px 0 10px 0">
             <div class="row">
@@ -146,6 +145,7 @@ document.onkeypress = stopRKey;
         } else {
             alert("Your video is broke");
             enableFormElement('id_address');
+            enableFormElement('btnSearch');
         }
     }
     //kept for later reference when adding titles, dates, etc
@@ -211,6 +211,7 @@ document.onkeypress = stopRKey;
                         {
                             var address = vidData.lat + ',' + vidData.long;
                             showAddress(address,false);
+
                             disableFormElement('id_address');
                             disableFormElement('btnSearch');
                         }
@@ -226,12 +227,24 @@ document.onkeypress = stopRKey;
     }
 
     function disableFormElement(elementID){
-        document.getElementById(elementID).disabled = true;
+        if (document.getElementById(elementID).type == 'button'){
+
+            document.getElementById(elementID).disabled = true;
+        }
+        else {
+            document.getElementById(elementID).setAttribute('readonly','readonly');
+        }
     }
 
     function enableFormElement(elementID){
-        document.getElementById(elementID).disabled = false;
+        if (document.getElementById(elementID).type == 'button'){
+            document.getElementById(elementID).disabled = false;
+        }
+        else{
+            document.getElementById(elementID).removeAttribute('readonly');
+        }
     }
+
 
     function updateMapFromAddressBar(){
 
